@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../blocs/bloc.dart';
 
 class LoginScreen extends StatelessWidget {
+  final _bloc = new Bloc();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,27 +20,37 @@ class LoginScreen extends StatelessWidget {
         ));
   }
 
-  TextField emailField() {
-    return TextField(
-      onChanged: (value) {},
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        errorText: '',
-        hintText: 'you@example.com',
-        labelText: 'Email Address',
-      ),
-    );
+  StreamBuilder emailField() {
+    return StreamBuilder(
+        stream: this._bloc.emailStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return TextField(
+            onChanged: (value) => this._bloc.changeEmail(value),
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              errorText: snapshot.error,
+              hintText: 'you@example.com',
+              labelText: 'Email Address',
+            ),
+          );
+        });
   }
 
-  TextField passwordField() {
-    return TextField(
-      onChanged: (value) {},
-      decoration: InputDecoration(
-        errorText: '',
-        hintText: 'Password',
-        labelText: 'Password',
-      ),
-    );
+  StreamBuilder passwordField() {
+    return StreamBuilder(
+        stream: this._bloc.passwordStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return TextField(
+            onChanged: (value) {
+              this._bloc.changePassword(value);
+            },
+            decoration: InputDecoration(
+              errorText: snapshot.error,
+              hintText: 'Password',
+              labelText: 'Password',
+            ),
+          );
+        });
   }
 
   RaisedButton submitButton() {

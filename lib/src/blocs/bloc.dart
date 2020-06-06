@@ -18,5 +18,6 @@ class Bloc with Validators {
     this._emailController.close();
     this._passwordController.close();
   }
-  
 }
+
+final bloc = new Bloc();
